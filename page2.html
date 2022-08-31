@@ -11,41 +11,57 @@
       const light = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 1 );
       scene.add(light);
 	  
-      const faceMesh = mindarThree.addFaceMesh();
-      //const texture = new THREE.TextureLoader().load('./assets/AR/AR_Assets/FaceTexture_5.png');
-	  const texture = new THREE.TextureLoader().load('https://threedolphins.github.io/WebAR/assets/AR/AR_Assets/FaceTexture_5.png');
-      faceMesh.material.map = texture;
-      faceMesh.material.transparent = true;
-      faceMesh.material.needsUpdate = true;
-      scene.add(faceMesh);
+      const anchor = mindarThree.addAnchor(1);
+      const geometry = new THREE.SphereGeometry( 0.1, 32, 16 );
+      const material = new THREE.MeshBasicMaterial( {color: 0x00ffff, transparent: true, opacity: 0.5} );
+      const sphere = new THREE.Mesh( geometry, material );
+      anchor.group.add(sphere);
+	
+	  sphere.position.y -= 0.1;
+	  
+	  //Falling Object
+	  var iMissedCount = 0;
+	  var iCaughtCount = 0;
 	  
 	  const texObj = new THREE.TextureLoader().load('https://threedolphins.github.io/WebAR/assets/AR/AR_Assets/IC_0.png');
-	  const geometry = new THREE.PlaneGeometry( 30, 30, 4, 4 );
-	  const material = new THREE.MeshBasicMaterial( { map: texObj } );
-	  material.transparent = true;
-	  const cubeMesh = new THREE.Mesh( geometry, material );
+	  const geometryObj = new THREE.PlaneGeometry( 8, 8, 4, 4 );
+	  const materialObj = new THREE.MeshBasicMaterial( { map: texObj } );
+	  materialObj.transparent = true;
+	  const cubeMesh = new THREE.Mesh( geometryObj, materialObj );
 	  scene.add( cubeMesh );
 				
 	  cubeMesh.position.x = 0;
-	  cubeMesh.position.y = 200;
-	  cubeMesh.position.z = -500;
-	
+	  cubeMesh.position.y = 50;
+	  cubeMesh.position.z = 0;
+	  
       const start = async() => {
 	await mindarThree.start();
 	renderer.setAnimationLoop(() => {
 	
-	//cubeMesh.rotation.x += 0.005;
-	//cubeMesh.rotation.y += 0.01;
+	var target = new THREE.Vector3();
+    sphere.getWorldPosition( target );	
+	//console.log(target);
 	
-	cubeMesh.position.y -= 2;
-	//cubeMesh.position.z = -500;
-	if(cubeMesh.position.y < -200)
+	cubeMesh.position.z = target.z;
+	cubeMesh.position.y -= 0.6;	
+	if(cubeMesh.position.y < -50)
 	{
-	   cubeMesh.position.y = 200;
+	   cubeMesh.position.y = 50;
+	   iMissedCount++;
 	}
 	
-	console.log(faceMesh.position);
-	  renderer.render(scene, camera);
+	//If Object colided with mouth object
+	if((cubeMesh.position.y > target.y - 2.0) && (cubeMesh.position.y < target.y + 2.0))
+	{
+		if((cubeMesh.position.x > target.x - 2.0) && (cubeMesh.position.x < target.x + 2.0))
+		{
+			cubeMesh.position.y = 50;
+			iCaughtCount++;
+		}
+	}
+
+    document.getElementById("text_update").innerHTML = iCaughtCount + " Caught & " + iMissedCount +" Missed";
+	renderer.render(scene, camera);
 	});
       }
       start();
@@ -60,9 +76,25 @@
 	position: relative;
 	overflow: hidden;
       }
+	  
+	  #info {
+	font-family: "Segoe UI",Arial,sans-serif;
+    font-weight: 400; 
+	position: absolute;	
+	width: 100%;
+	text-align: center;
+	text-transform: uppercase;
+    background-color: black;
+    color: white;
+	z-index: 100;
+	display:block;
+}
     </style>
   </head>
   <body>
+  <div id="info">
+  <p id="text_update">0 Caught & 0 Missed</p>
+  </div>
     <div id="container">
     </div>
   </body>
