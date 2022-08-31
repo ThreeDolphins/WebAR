@@ -12,17 +12,39 @@
       scene.add(light);
 	  
       const faceMesh = mindarThree.addFaceMesh();
-      const texture = new THREE.TextureLoader().load('./assets/AR/AR_Assets/FaceTexture_5.png');
-	  //const texture = new THREE.TextureLoader().load('https://threedolphins.github.io/WebAR/assets/AR/AR_Assets/FaceTexture_5.png');
+      //const texture = new THREE.TextureLoader().load('./assets/AR/AR_Assets/FaceTexture_5.png');
+	  const texture = new THREE.TextureLoader().load('https://threedolphins.github.io/WebAR/assets/AR/AR_Assets/FaceTexture_5.png');
       faceMesh.material.map = texture;
       faceMesh.material.transparent = true;
       faceMesh.material.needsUpdate = true;
-      scene.add(faceMesh); 
+      scene.add(faceMesh);
+	  
+	  const texObj = new THREE.TextureLoader().load('https://threedolphins.github.io/WebAR/assets/AR/AR_Assets/IC_0.png');
+	  const geometry = new THREE.PlaneGeometry( 30, 30, 4, 4 );
+	  const material = new THREE.MeshBasicMaterial( { map: texObj } );
+	  material.transparent = true;
+	  const cubeMesh = new THREE.Mesh( geometry, material );
+	  scene.add( cubeMesh );
+				
+	  cubeMesh.position.x = 0;
+	  cubeMesh.position.y = 200;
+	  cubeMesh.position.z = -500;
 	
       const start = async() => {
 	await mindarThree.start();
 	renderer.setAnimationLoop(() => {
 	
+	//cubeMesh.rotation.x += 0.005;
+	//cubeMesh.rotation.y += 0.01;
+	
+	cubeMesh.position.y -= 2;
+	//cubeMesh.position.z = -500;
+	if(cubeMesh.position.y < -200)
+	{
+	   cubeMesh.position.y = 200;
+	}
+	
+	console.log(faceMesh.position);
 	  renderer.render(scene, camera);
 	});
       }
