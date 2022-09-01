@@ -27796,7 +27796,7 @@
             {
                 UI: B
             } = g(2749);
-        window.MINDAR || (window.MINDAR = {}), window.MINDAR.FACE || (window.MINDAR.FACE = {}), window.MINDAR.FACE.MindARThree = class {
+        window.MPIPEAR || (window.MPIPEAR = {}), window.MPIPEAR.FACE || (window.MPIPEAR.FACE = {}), window.MPIPEAR.FACE.MPARThree = class {
             constructor({
                 container: g,
                 uiLoading: Q = "yes",
@@ -27928,6 +27928,6 @@
                     t = I.domElement;
                 o.style.position = "absolute", o.style.top = B.style.top, o.style.left = B.style.left, o.style.width = B.style.width, o.style.height = B.style.height, t.style.position = "absolute", t.style.top = B.style.top, t.style.left = B.style.left, t.style.transformOrigin = "top left", t.style.transform = "scale(" + Q / parseFloat(t.style.width) + "," + E / parseFloat(t.style.height) + ")"
             }
-        }, window.MINDAR.FACE.THREE = A
+        }, window.MPIPEAR.FACE.THREE = A
     })()
 })();

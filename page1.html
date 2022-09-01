@@ -3,15 +3,15 @@
   <head>
     <script src="assets/AR/face_track_ar_mesh.js"></script>
     <script type="module">
-      const THREE = window.MINDAR.FACE.THREE;
-      const mindarThree = new window.MINDAR.FACE.MindARThree({
+      const THREE = window.MPIPEAR.FACE.THREE;
+      const mpARThree = new window.MPIPEAR.FACE.MPARThree({
 	container: document.querySelector("#container"),
       });
-      const {renderer, scene, camera} = mindarThree;
+      const {renderer, scene, camera} = mpARThree;
       const light = new THREE.HemisphereLight( 0xffffff, 0xbbbbff, 1 );
       scene.add(light);
 	  
-      const faceMesh = mindarThree.addFaceMesh();
+      const faceMesh = mpARThree.addFaceMesh();
       const texture = new THREE.TextureLoader().load('./assets/AR/AR_Assets/FaceTexture_5.png');
 	  //const texture = new THREE.TextureLoader().load('https://threedolphins.github.io/WebAR/assets/AR/AR_Assets/FaceTexture_5.png');
       faceMesh.material.map = texture;
@@ -20,7 +20,7 @@
       scene.add(faceMesh); 
 	
       const start = async() => {
-	await mindarThree.start();
+	await mpARThree.start();
 	renderer.setAnimationLoop(() => {
 	
 	  renderer.render(scene, camera);
